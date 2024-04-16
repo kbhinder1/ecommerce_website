@@ -1,0 +1,37 @@
+<h1>Order Details</h1>
+
+<div class="card mb-3">
+  <div class="card-header">
+    Order ID: <%= @order.id %>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Order placed on <%= @order.created_at.strftime("%B %d, %Y") %></h5>
+    <h6 class="card-subtitle mb-2 text-muted">Total: <%= number_to_currency(@order.total) %></h6>
+
+  
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price Per Item</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @order.order_items.each do |item| %>
+          <tr>
+            <td><%= link_to item.product.name, product_path(item.product) %></td>
+            <td><%= item.quantity %></td>
+            <td><%= number_to_currency(item.price) %></td>
+            <td><%= number_to_currency(item.quantity * item.price) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer text-muted">
+    <%= link_to 'Back to Orders', orders_path, class: 'btn btn-secondary' %>
+  </div>
+</div>

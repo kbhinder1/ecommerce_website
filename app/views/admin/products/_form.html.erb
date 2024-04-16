@@ -1,0 +1,56 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <%= form_with(model: [:admin, product], local: true, class: "needs-validation", novalidate: true) do |form| %>
+        <% if product.errors.any? %>
+          <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading"><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h4>
+            <ul>
+              <% product.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="mb-3">
+          <%= form.label :name, class: 'form-label' %>
+          <%= form.text_field :name, class: 'form-control' %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :description, class: 'form-label' %>
+          <%= form.text_area :description, class: 'form-control' %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :price, class: 'form-label' %>
+          <%= form.number_field :price, class: 'form-control' %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :category_id, 'Category', class: 'form-label' %>
+          <%= form.collection_select :category_id, Category.all, :id, :name, {include_blank: true}, {class: 'form-select'} %>
+        </div>
+
+        <% if product.persisted? && product.images.attached? %>
+          <div class="existing-images mb-3">
+            <p>Existing Images:</p>
+            <% product.images.each do |image| %>
+              <%= image_tag(image, height: '100') %>
+            <% end %>
+          </div>
+        <% end %>
+
+       <div class="mb-3">
+  <%= form.label :images, 'Upload Images', class: 'form-label' %>
+  <%= form.file_field :images, multiple: true, direct_upload: true, class: 'form-control' %>
+</div>
+
+        <div class="actions">
+          <%= form.submit class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

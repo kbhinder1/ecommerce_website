@@ -1,0 +1,22 @@
+<h1>Your Shopping Cart</h1>
+
+<% if session[:cart].any? %>
+  <% session[:cart].each do |product_id, quantity| %>
+    <% product = Product.find(product_id) %>
+    <p>
+      <%= product.name %> - Quantity: <%= quantity %>
+      <%= button_to 'Remove', remove_item_cart_path(product_id: product.id), method: :post %>
+      <%= form_with url: update_item_cart_path, method: :post do |form| %>
+        <%= form.hidden_field :product_id, value: product.id %>
+        <%= form.number_field :quantity, value: quantity %>
+        <%= form.submit 'Update' %>
+      <% end %>
+    </p>
+  <% end %>
+  
+<%= link_to 'Proceed to Checkout', checkout_show_path, class: 'btn btn-primary' %>
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>
+
+<%= link_to 'Back to Products', products_path %>

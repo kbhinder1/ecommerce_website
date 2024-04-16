@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+<%= form_with(model: [:admin, @static_page], local: true, method: :patch) do |form| %>
+
+        <div class="mb-3">
+          <%= form.label :title, class: 'form-label' %>
+          <%= form.text_field :title, class: 'form-control', required: true %>
+          <div class="invalid-feedback">
+            Please provide a title.
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= form.label :content, class: 'form-label' %>
+          <%= form.text_area :content, rows: 10, class: 'form-control', required: true %>
+          <div class="invalid-feedback">
+            Content cannot be blank.
+          </div>
+        </div>
+        
+        <div class="actions text-center">
+          <%= form.submit class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

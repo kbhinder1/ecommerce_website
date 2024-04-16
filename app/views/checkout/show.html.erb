@@ -1,0 +1,30 @@
+<h1>Checkout</h1>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const checkoutForm = document.getElementById('checkout-form');
+    checkoutForm.addEventListener('submit', function(event) {
+      const ccNum = document.getElementById('credit_card_number').value;
+      const expDate = document.getElementById('expiration_date').value;
+      
+      if (ccNum.trim() === "" || expDate.trim() === "") {
+        event.preventDefault(); // Stop the form from submitting
+        alert('Credit card number and expiration date must not be empty.');
+      }
+    });
+  });
+</script>
+
+<form id="checkout-form" action="/checkout/create" method="post">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+  <% session[:cart].each do |product_id, quantity| %>
+    <% product = Product.find(product_id) %>
+    <p>
+      <%= product.name %> - Quantity: <%= quantity %> - Price: <%= number_to_currency(product.price) %>
+    </p>
+  <% end %>
+  
+  Credit Card Number: <input type="text" id="credit_card_number" name="credit_card_number" required><br>
+  Expiration Date: <input type="text" id="expiration_date" name="expiration_date" required><br>
+  <input type="submit" value="Place Order">
+</form>

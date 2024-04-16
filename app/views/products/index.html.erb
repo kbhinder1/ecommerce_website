@@ -1,0 +1,50 @@
+<div class="container mt-3">
+  <!-- Search form with Bootstrap -->
+  <%= form_with url: products_path, method: :get, local: true, class: "row g-3" do |form| %>
+    <div class="col-auto">
+      <%= form.text_field :search, placeholder: "Search products...", class: "form-control" %>
+    </div>
+    <div class="col-auto">
+      <%= form.submit "Search", class: "btn btn-primary mb-3" %>
+    </div>
+  <% end %>
+
+  <div class="btn-group mb-3" role="group" aria-label="Category filters">
+    <%= link_to 'All', products_path(filter: params[:filter], search: params[:search]), class: "btn btn-outline-secondary" %>
+    <% @categories.each do |category| %>
+      <%= link_to category.name, products_path(category_id: category.id, filter: params[:filter], search: params[:search]), class: "btn btn-outline-secondary" %>
+    <% end %>
+  </div>
+
+  <div class="btn-group mb-3" role="group" aria-label="Product filters">
+    <%= link_to 'New', products_path(filter: 'new', category_id: params[:category_id], search: params[:search]), class: "btn btn-outline-info" %>
+    <%= link_to 'Recently Updated', products_path(filter: 'updated', category_id: params[:category_id], search: params[:search]), class: "btn btn-outline-info" %>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <% @products.each do |product| %>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= link_to product.name, product_path(product) %>
+            </h5>
+            <p class="card-text"><%= product.description %></p>
+          </div>
+          <div class="card-footer d-flex justify-content-between align-items-center">
+            <small class="text-muted">Price: <%= number_to_currency(product.price) %></small>
+            <%= form_with url: product_add_item_to_cart_path(product_id: product.id), method: :post, class: "d-inline" do |form| %>
+              <%= form.hidden_field :product_id, value: product.id %>
+              <%= form.number_field :quantity, value: 1, min: 1, class: 'form-control-sm', title: 'Quantity' %>
+              <%= form.submit 'Add to Cart', class: 'btn btn-primary btn-sm' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="pagination">
+    <%= will_paginate @products, class: "pagination" %>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+  <%= javascript_importmap_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<%= render 'admin/navbar' %> 
+
+<%= yield %>
+
+<h1>All Products</h1>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12">
+      <h2>Products</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+
+            <th scope="col">Category</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @products.each_with_index do |product, index| %>
+            <tr>
+              <th scope="row"><%= index + 1 %></th>
+              <td><%= product.name %></td>
+              <td><%= product.description %></td>
+              <td><%= number_to_currency(product.price) %></td>
+              <td><%= product.category.name %></td>
+
+              <td>
+                <%= link_to 'Edit', edit_admin_product_path(product), class: 'btn btn-sm btn-primary' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+
+
+</html>
